@@ -9,5 +9,6 @@ backend/news.db-wal
 *.db-wal
 .env
 *.db
-dist/
+# dist is intentionally tracked so backend can serve it
+# dist/
 .DS_Store

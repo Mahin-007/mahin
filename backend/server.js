@@ -1,15 +1,22 @@
 import express from 'express';
 import cors from 'cors';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { getArticles, getArticleCount, SOURCES } from './services/rssService.js';
 import { generateDailyBrief, findConnections, analyzeArticle, getTodaysBrief, getRecentConnections } from './services/aiService.js';
 import { startScheduler, runPipeline } from './services/scheduler.js';
 import { getDb } from './db.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:4173'] }));
 app.use(express.json());
+
+// Serve frontend static files
+const frontendDist = join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDist));
 
 // ─── Routes ────────────────────────────────────────────────
 
@@ -135,10 +142,16 @@ app.get('/api/stats', (req, res) => {
   }
 });
 
+// Catch-all: serve frontend for any non-API route
+app.get('*', (req, res) => {
+  res.sendFile(join(frontendDist, 'index.html'));
+});
+
 // ─── Start ──────────────────────────────────────────────────
 
 app.listen(PORT, () => {
   console.log(`\n🗞️  News Analyzer API running on http://localhost:${PORT}`);
+  console.log(`🌐 Frontend served at http://localhost:${PORT}`);
   console.log(`📡 Starting news aggregation...\n`);
   startScheduler();
 });
