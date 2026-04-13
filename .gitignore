@@ -2,6 +2,11 @@ node_modules/
 backend/node_modules/
 frontend/node_modules/
 backend/news.db
+backend/news.db-shm
+backend/news.db-wal
+*.db
+*.db-shm
+*.db-wal
 .env
 *.db
 dist/
