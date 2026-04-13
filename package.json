@@ -1,0 +1,11 @@
+{
+  "name": "current-affairs-analyst",
+  "version": "1.0.0",
+  "description": "AI-powered news analysis platform for current affairs",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev:backend": "cd backend && node server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "start": "npm run dev:backend"
+  }
+}
